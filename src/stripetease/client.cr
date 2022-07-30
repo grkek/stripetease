@@ -7,6 +7,7 @@ module Stripetease
     getter customers : API::Customers
     getter payment_intents : API::PaymentIntents
     getter payment_methods : API::PaymentMethods
+    getter prices : API::Prices
 
     def initialize(base_url : String, api_key : String)
       session = Session.new(base_url, api_key)
@@ -16,6 +17,7 @@ module Stripetease
       @customers = API::Customers.new(session)
       @payment_intents = API::PaymentIntents.new(session)
       @payment_methods = API::PaymentMethods.new(session)
+      @prices = API::Prices.new(session)
     end
   end
 end
