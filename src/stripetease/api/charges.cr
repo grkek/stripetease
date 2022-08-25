@@ -12,16 +12,6 @@ module Stripetease
         JSON.parse(@session.get("/v1/charges/#{id}").body)
       end
 
-      # Returns a list of charges you’ve previously created.
-      def list(**kwargs)
-        JSON.parse(@session.get("/v1/charges", form: kwargs).body)
-      end
-
-      # Search for charges you’ve previously created using Stripe’s Search Query Language.
-      def search(**kwargs)
-        JSON.parse(@session.get("/v1/charges/search", form: kwargs).body)
-      end
-
       # To charge a credit card or other payment source, you create a Charge object.
       # If your API key is in test mode, the supplied payment source (e.g., card) won’t actually be charged, although everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).
       def create(amount : Int32, currency : String, customer : String? = nil, description : String? = nil, metadata : Hash? = nil, receipt_email : String? = nil, shipping : Hash? = nil, source : String? = nil, statement_descriptor : String? = nil, application_fee_amount : Int32? = nil, capture : Bool? = nil, on_behalf_of : String? = nil, radar_options : Hash? = nil, transfer_data : Hash? = nil, transfer_group : String? = nil)

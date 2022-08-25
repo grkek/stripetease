@@ -11,17 +11,6 @@ module Stripetease
         JSON.parse(@session.get("/v1/customers/#{id}").body)
       end
 
-      # Returns a list of your customers.
-      # The customers are returned sorted by creation date, with the most recent customers appearing first.
-      def list(**kwargs)
-        JSON.parse(@session.get("/v1/customers", form: kwargs).body)
-      end
-
-      # Search for customers you’ve previously created using Stripe’s Search Query Language.
-      def search(**kwargs)
-        JSON.parse(@session.get("/v1/customers/search", form: kwargs).body)
-      end
-
       def create(account_balance : Int32? = nil, coupon : String? = nil, default_source : String? = nil, description : String? = nil, email : String? = nil, invoice_prefix : String? = nil, metadata : Hash? = nil, shipping : Hash? = nil, source : String? = nil, tax_info : Hash? = nil)
         io = IO::Memory.new
         builder = ParameterBuilder.new(io)

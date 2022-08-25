@@ -17,8 +17,15 @@ module Stripetease
       end
 
       # Returns a list of PaymentMethods attached to the StripeAccount.
-      def list(**kwargs)
-        JSON.parse(@session.get("/v1/payment_methods", form: kwargs).body)
+      def list(type : String, customer : String? = nil, ending_before : String? = nil, limit : Int32? = nil, starting_after : String? = nil)
+        io = IO::Memory.new
+        builder = ParameterBuilder.new(io)
+
+        {% for x in %w(type customer ending_before limit starting_after) %}
+          builder.add({{x}}, {{x.id}}) unless {{x.id}}.nil?
+        {% end %}
+
+        JSON.parse(@session.get("/v1/payment_methods", raw: io.to_s).body)
       end
 
       # Returns a list of PaymentMethods for a given Customer.
