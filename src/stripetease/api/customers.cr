@@ -11,6 +11,29 @@ module Stripetease
         JSON.parse(@session.get("/v1/customers/#{id}").body)
       end
 
+      # Returns a list of customers.
+      def list(email : String? = nil, created : Hash? = nil, ending_before : String? = nil, limit : Int32? = nil, starting_after : String? = nil)
+        io = IO::Memory.new
+        builder = ParameterBuilder.new(io)
+
+        {% for x in %w(email created ending_before limit starting_after) %}
+          builder.add({{x}}, {{x.id}}) unless {{x.id}}.nil?
+        {% end %}
+
+        JSON.parse(@session.get("/v1/customers", raw: io.to_s).body)
+      end
+
+      def search(query : String, limit : Int32? = nil, page : Int32? = nil)
+        io = IO::Memory.new
+        builder = ParameterBuilder.new(io)
+
+        {% for x in %w(query limit page) %}
+          builder.add({{x}}, {{x.id}}) unless {{x.id}}.nil?
+        {% end %}
+
+        JSON.parse(@session.get("/v1/customers/search", raw: io.to_s).body)
+      end
+
       def create(account_balance : Int32? = nil, coupon : String? = nil, default_source : String? = nil, description : String? = nil, email : String? = nil, invoice_prefix : String? = nil, metadata : Hash? = nil, shipping : Hash? = nil, source : String? = nil, tax_info : Hash? = nil)
         io = IO::Memory.new
         builder = ParameterBuilder.new(io)
